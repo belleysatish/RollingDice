@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Dice Roller</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-align: center;
+        }
+
+        .container {
+            perspective: 1000px;
+        }
+
+        .dice {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: transform 1s;
+        }
+
+        /* Dice face styling */
+        .face {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: #ffffff;
+            border: 2px solid #333;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            color: #333;
+            border-radius: 12px;
+        }
+
+        /* Position each face in 3D space */
+        .face-1 { transform: rotateY(0deg) translateZ(50px); }
+        .face-2 { transform: rotateY(90deg) translateZ(50px); }
+        .face-3 { transform: rotateY(180deg) translateZ(50px); }
+        .face-4 { transform: rotateY(-90deg) translateZ(50px); }
+        .face-5 { transform: rotateX(90deg) translateZ(50px); }
+        .face-6 { transform: rotateX(-90deg) translateZ(50px); }
+
+        /* Dot styling */
+        .dot {
+            width: 15px;
+            height: 15px;
+            background-color: #333;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        /* Dot arrangements for each face */
+        .face-1 .dot { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .face-2 .dot:nth-child(1) { top: 30%; left: 30%; transform: translate(-50%, -50%); }
+        .face-2 .dot:nth-child(2) { top: 70%; left: 70%; transform: translate(-50%, -50%); }
+        
+        .face-3 .dot:nth-child(1) { top: 30%; left: 30%; transform: translate(-50%, -50%); }
+        .face-3 .dot:nth-child(2) { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .face-3 .dot:nth-child(3) { top: 70%; left: 70%; transform: translate(-50%, -50%); }
+        
+        .face-4 .dot:nth-child(1) { top: 30%; left: 30%; transform: translate(-50%, -50%); }
+        .face-4 .dot:nth-child(2) { top: 30%; left: 70%; transform: translate(-50%, -50%); }
+        .face-4 .dot:nth-child(3) { top: 70%; left: 30%; transform: translate(-50%, -50%); }
+        .face-4 .dot:nth-child(4) { top: 70%; left: 70%; transform: translate(-50%, -50%); }
+        
+        .face-5 .dot:nth-child(1) { top: 30%; left: 30%; transform: translate(-50%, -50%); }
+        .face-5 .dot:nth-child(2) { top: 30%; left: 70%; transform: translate(-50%, -50%); }
+        .face-5 .dot:nth-child(3) { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .face-5 .dot:nth-child(4) { top: 70%; left: 30%; transform: translate(-50%, -50%); }
+        .face-5 .dot:nth-child(5) { top: 70%; left: 70%; transform: translate(-50%, -50%); }
+        
+        .face-6 .dot:nth-child(1) { top: 30%; left: 30%; transform: translate(-50%, -50%); }
+        .face-6 .dot:nth-child(2) { top: 30%; left: 50%; transform: translate(-50%, -50%); }
+        .face-6 .dot:nth-child(3) { top: 30%; left: 70%; transform: translate(-50%, -50%); }
+        .face-6 .dot:nth-child(4) { top: 70%; left: 30%; transform: translate(-50%, -50%); }
+        .face-6 .dot:nth-child(5) { top: 70%; left: 50%; transform: translate(-50%, -50%); }
+        .face-6 .dot:nth-child(6) { top: 70%; left: 70%; transform: translate(-50%, -50%); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Roll the Dice!</h1>
+        <div id="dice" class="dice" onclick="rollDice()">
+            <div class="face face-1">
+                <div class="dot"></div>
+            </div>
+            <div class="face face-2">
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="face face-3">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="face face-4">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="face face-5">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="face face-6">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function rollDice() {
+            const dice = document.getElementById("dice");
+            const roll = Math.floor(Math.random() * 6) + 1;
+
+            // Apply rotation based on random roll
+            switch (roll) {
+                case 1:
+                    dice.style.transform = "rotateX(0deg) rotateY(0deg)";
+                    break;
+                case 2:
+                    dice.style.transform = "rotateY(-90deg)";
+                    break;
+                case 3:
+                    dice.style.transform = "rotateY(180deg)";
+                    break;
+                case 4:
+                    dice.style.transform = "rotateY(90deg)";
+                    break;
+                case 5:
+                    dice.style.transform = "rotateX(-90deg)";
+                    break;
+                case 6:
+                    dice.style.transform = "rotateX(90deg)";
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
